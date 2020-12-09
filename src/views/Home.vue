@@ -1,18 +1,19 @@
 <template>
-  <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
-  </div>
+  <v-container fluid>
+    <v-card flat :color="`${darkMode ? 'grey lighten-3' : ''}`" class="mb-2 pa-2">
+      <v-row justify="center" align="center">
+        <img alt="LOGO-APSOFT" src="@/assets/logoapsoft.png">
+        <img alt="LOGO-SOSALUD" src="@/assets/logososalud.png">
+      </v-row>
+    </v-card>
+  </v-container>
 </template>
 
 <script>
-// @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue'
-
 export default {
   name: 'Home',
-  components: {
-    HelloWorld
+  created () {
+    this.$store.commit('SET_GOBACK')
   }
 }
 </script>

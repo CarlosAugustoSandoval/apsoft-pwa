@@ -1,0 +1,17 @@
+{
+  "projects": {
+    "default": "pwapsoft"
+  },
+  "targets": {
+    "pwapsoft": {
+      "hosting": {
+        "pruebas": [
+          "pwapsoft"
+        ],
+        "capresoca": [
+          "pwapsoft-capresoca"
+        ]
+      }
+    }
+  }
+}

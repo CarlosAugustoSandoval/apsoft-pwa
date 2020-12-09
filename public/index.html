@@ -1,17 +1,37 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <link rel="icon" href="<%= BASE_URL %>favicon.ico">
-    <title><%= htmlWebpackPlugin.options.title %></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, maximum-scale=1">
+      <link rel="icon" href="favicon.ico">
+      <title>APSOFT-PWA</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@latest/css/materialdesignicons.min.css">
   </head>
   <body>
+  <script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-app.js"></script>
+  <script src="/__/firebase/7.24.0/firebase-functions.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-analytics.js"></script>
+
+  <script>
+      var firebaseConfig = {
+          apiKey: "AIzaSyAQGswQjfR4oJzaTFym_s9T9tYQ3qzyA2A",
+          authDomain: "pwapsoft.firebaseapp.com",
+          databaseURL: "https://pwapsoft.firebaseio.com",
+          projectId: "pwapsoft",
+          storageBucket: "pwapsoft.appspot.com",
+          messagingSenderId: "659733328445",
+          appId: "1:659733328445:web:b051b950866bc7ab70f054",
+          measurementId: "G-CS5JXKYQ11"
+      };
+      // Initialize Firebase
+      firebase.initializeApp(firebaseConfig);
+      firebase.analytics();
+  </script>
     <noscript>
       <strong>We're sorry but <%= htmlWebpackPlugin.options.title %> doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
     </noscript>
     <div id="app"></div>
-    <!-- built files will be auto injected -->
   </body>
 </html>
