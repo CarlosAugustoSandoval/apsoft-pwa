@@ -3,7 +3,7 @@
     <v-card tile>
       <v-toolbar dark color="primary">
         <v-toolbar-title>
-          Registro Nexo
+          Registro Conviviente
         </v-toolbar-title>
         <v-spacer></v-spacer>
         <v-btn icon dark @click="close">

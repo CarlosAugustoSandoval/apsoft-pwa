@@ -64,7 +64,7 @@ export const itemsMenu = [
   {
     id: 30,
     title: 'EDI',
-    subtitle: 'Encuestas Demanda Inducida',
+    subtitle: 'Encuestas de Demanda Inducida',
     icon: 'mdi-clipboard-plus-outline',
     color: 'indigo',
     routeName: 'DemandaInducida',

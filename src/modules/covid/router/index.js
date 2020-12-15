@@ -31,6 +31,36 @@ export default {
       }
     },
     {
+      path: 'covid/domicilio-sin-encuesta/detalle/:idd/detalle',
+      name: 'DetalleDomicilioSinEncuesta',
+      props: true,
+      component: () => import('@/modules/covid/views/domicilioSinEncuesta/DetalleDomicilio'),
+      meta: {
+        requiresAuth: true,
+        requiresOnLine: false,
+        requiresPermission: 'covid-DomicilioSinEncuestaIndex',
+        avatar: {
+          icon: 'mdi-home-alert',
+          color: 'purple'
+        }
+      }
+    },
+    {
+      path: 'covid/domicilio-sin-encuesta/detalle/:idd/mapa',
+      name: 'DetalleDomicilioMapa',
+      props: true,
+      component: () => import('@/modules/covid/views/domicilioSinEncuesta/DetalleDomicilioMapa'),
+      meta: {
+        requiresAuth: true,
+        requiresOnLine: false,
+        requiresPermission: 'covid-DomicilioSinEncuestaIndex',
+        avatar: {
+          icon: 'mdi-map-marker-radius',
+          color: 'green'
+        }
+      }
+    },
+    {
       path: 'covid/erp/detalle/:idd/step/:step',
       name: 'DetalleERP',
       props: true,

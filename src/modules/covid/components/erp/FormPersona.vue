@@ -277,7 +277,8 @@ export default {
       'departamentos',
       'regimenes',
       'epss',
-      'regimenesEspeciales'
+      'regimenesEspeciales',
+      'datosMemoria'
     ])
   },
   watch: {
@@ -376,9 +377,9 @@ export default {
       this.persona.celular = null
       this.persona.email = null
       this.persona.direccion = null
-      this.persona.departamento_id = null
-      this.persona.municipio_id = null
-      this.persona.barrio_id = null
+      // this.persona.departamento_id = null
+      // this.persona.municipio_id = null
+      // this.persona.barrio_id = null
       this.persona.si_eps = 1
       this.persona.eps_id = null
       this.persona.tipo_afiliacion = null
@@ -396,9 +397,11 @@ export default {
         this.persona.celular = response.afiliado.numero_celular
         this.persona.email = response.afiliado.email
         this.persona.direccion = response.afiliado.direccion
-        this.persona.departamento_id = response.afiliado.departamento_id
-        this.persona.municipio_id = response.afiliado.centro_poblado_id
-        this.persona.barrio_id = response.afiliado.barrio_id || null
+        if (this.datosMemoria && !this.datosMemoria.municipio_id) {
+          this.persona.departamento_id = response.afiliado.departamento_id
+          this.persona.municipio_id = response.afiliado.centro_poblado_id
+          this.persona.barrio_id = response.afiliado.barrio_id || null
+        }
         this.persona.eps_id = response.afiliado.eps_id
         this.persona.tipo_afiliacion = response.afiliado.regimen
       } else if (response.afiliado) {

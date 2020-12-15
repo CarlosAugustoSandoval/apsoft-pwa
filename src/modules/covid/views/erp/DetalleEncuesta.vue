@@ -29,7 +29,7 @@
         </v-list-item>
       </v-list>
       <v-divider/>
-      <v-window :value="window">
+      <v-window v-model="window">
         <v-window-item :value="0">
           <detalle v-if="encuesta" :encuesta="encuesta" />
         </v-window-item>
@@ -72,7 +72,7 @@
           <v-icon>mdi-clipboard-text</v-icon>
         </v-btn>
         <v-btn v-if="encuesta && encuesta.localiza_persona && encuesta.contesta_encuesta">
-          <span>Nexos</span>
+          <span>Convivientes</span>
           <v-icon>mdi-human-queue</v-icon>
         </v-btn>
       </v-bottom-navigation>

@@ -24,6 +24,7 @@
                 <v-list-item
                   :key="`domicilio${indexItem}`"
                   class="px-1"
+                  @click="isArrayObject(item.observaciones) ? $router.push({ name: 'DetalleDomicilioSinEncuesta', params: { idd: item.idd }}) : ''"
                 >
                   <v-badge
                     :value="item.uuid"
@@ -58,15 +59,40 @@
                       depressed
                       fab
                       small
+                      color="green"
+                      @click.stop="$router.push({ name: 'DetalleDomicilioMapa', params: { idd: item.idd }})"
+                      class="mr-1"
+                      v-if="item.coordenadas"
+                    >
+                      <v-icon>mdi-map-marker-radius</v-icon>
+                    </v-btn>
+                    <v-btn
+                      dark
+                      depressed
+                      fab
+                      small
+                      color="blue"
+                      @click.stop="refactorizarDomicilio(item)"
+                      class="mr-1"
+                      v-if="!isArrayObject(item.observaciones)"
+                    >
+                      <v-icon>mdi-restore</v-icon>
+                    </v-btn>
+                    <v-btn
+                      dark
+                      depressed
+                      fab
+                      small
                       color="red"
                       @click.stop="eliminarDomicilio(item)"
                       class="mr-1"
+                      v-if="(!item.uuid && item.status === 0) || (item.observaciones && isArrayObject(item.observaciones) && Array.isArray(JSON.parse(item.observaciones)) && JSON.parse(item.observaciones).length === 1 && item.uuid)"
                     >
                       <v-icon>mdi-delete</v-icon>
                     </v-btn>
                   </v-list-item-action>
                 </v-list-item>
-                <v-divider :key="`dividerdomicilio${indexItem}`"/>
+                <v-divider v-if="indexItem !== (table.items.length - 1)" :key="`dividerdomicilio${indexItem}`"/>
               </template>
             </v-list>
           </template>
@@ -174,8 +200,9 @@
 
 <script>
 import RegistroDomicilio from '@/modules/covid/components/domicilioSinEncuesta/RegistroDomicilio'
+import { mapGetters } from 'vuex'
 export default {
-  name: 'Encuestas',
+  name: 'Domicilios',
   components: {
     RegistroDomicilio
   },
@@ -201,6 +228,9 @@ export default {
     }
   }),
   computed: {
+    ...mapGetters([
+      'user'
+    ]),
     permisos () {
       return this.$store.getters.getPermissionModule('covid')
     }
@@ -226,6 +256,9 @@ export default {
     this.$store.commit('SET_ASSIGN_DB_COMPLEMENTOS')
   },
   methods: {
+    isArrayObject (text) {
+      return text.includes('[{"') && text.includes('"}]') && text.includes('{') && text.includes('}') && text.includes('"') && text.includes('","') && text.includes('":"')
+    },
     crearDomicilio () {
       this.$refs.RegistroDomicilio.open()
     },
@@ -255,6 +288,7 @@ export default {
     async getRegistros () {
       this.table.loading = true
       this.$store.dispatch('getDomiciliosTabla', this.table).then(data => {
+        console.log('this.table', this.table)
         this.table.changeSearch = false
         this.table.currentPage = data.currentPage
         this.table.totalPage = data.totalPage
@@ -263,6 +297,23 @@ export default {
         this.table.to = data.to
         this.table.total = data.total
         this.table.loading = false
+      })
+    },
+    refactorizarDomicilio (domicilio) {
+      this.loading = true
+      const domiCopia = JSON.parse(JSON.stringify(domicilio))
+      domiCopia.observaciones = JSON.stringify([{
+        tipificacion: domiCopia.tipificacion,
+        fecha: domiCopia.updated_at,
+        observacion: domiCopia.observaciones,
+        user_id: this.user.id,
+        usuario: this.user.name
+      }])
+      this.$store.dispatch('guardarDomicilio', domiCopia).then(response => {
+        if (response) {
+          this.getRegistros()
+        }
+        this.loading = false
       })
     }
   }

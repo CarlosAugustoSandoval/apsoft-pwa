@@ -64,7 +64,7 @@
                 :readonly="true"
               />
             </v-col>
-            <v-col cols="12" sm="6">
+            <v-col cols="12">
               <v-card outlined>
                 <v-card-text class="pt-3 pb-4">
                   <c-radio
@@ -171,7 +171,15 @@ export default {
           if (!this.domicilio.idd) this.domicilio.created_at = this.moment().format('YYYY-MM-DD hh:mm:ss')
           this.domicilio.updated_at = this.moment().format('YYYY-MM-DD hh:mm:ss')
           this.domicilio.user_id = this.user.id
-          this.$store.dispatch('guardarDomicilio', this.domicilio).then(response => {
+          const domiCopia = JSON.parse(JSON.stringify(this.domicilio))
+          domiCopia.observaciones = JSON.stringify([{
+            tipificacion: domiCopia.tipificacion,
+            fecha: domiCopia.updated_at,
+            observacion: domiCopia.observaciones,
+            user_id: this.user.id,
+            usuario: this.user.name
+          }])
+          this.$store.dispatch('guardarDomicilio', domiCopia).then(response => {
             if (response) {
               this.$emit('guardado')
               this.close()

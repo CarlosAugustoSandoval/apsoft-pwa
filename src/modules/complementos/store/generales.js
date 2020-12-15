@@ -13,7 +13,16 @@ const state = {
   sexos: [],
   goBack: null,
   municipiosSeleccionadosBarrios: [],
-  tipificacionesDomicilioSinEncuesta: []
+  tipificacionesDomicilioSinEncuesta: [],
+  datosMemoria: {
+    llamada_entrante: null,
+    tipo_tamizaje: null,
+    tamizador_id: null,
+    departamento_id: null,
+    municipio_id: null,
+    barrio_id: null,
+    localiza_persona: 1
+  }
 }
 
 // getters
@@ -57,6 +66,9 @@ const getters = {
     return state.tipificacionesDomicilioSinEncuesta.map(x => {
       return { value: x, text: x }
     })
+  },
+  datosMemoria: state => {
+    return state.datosMemoria
   }
 }
 
@@ -84,6 +96,14 @@ const actions = {
 
 // mutations
 const mutations = {
+  SET_DATOS_MEMORIA (state, data) {
+    state.datosMemoria.llamada_entrante = data.llamada_entrante
+    state.datosMemoria.tipo_tamizaje = data.tipo_tamizaje
+    state.datosMemoria.tamizador_id = data.tamizador_id
+    state.datosMemoria.departamento_id = data.departamento_id
+    state.datosMemoria.municipio_id = data.municipio_id
+    state.datosMemoria.barrio_id = data.barrio_id
+  },
   SET_DELETE_BARRIOS (state) {
     state.municipiosSeleccionadosBarrios = []
   },

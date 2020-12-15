@@ -11,6 +11,13 @@ const getters = {}
 
 // actions
 const actions = {
+  async sincronizarEDIS (context) {
+    const registrosFallidos = 0
+    context.commit('SET_SNACKBAR', {
+      color: registrosFallidos ? 'orange' : 'success',
+      message: `El proceso de sincronización ha terminado${registrosFallidos === 0 ? '' : ` con ${registrosFallidos} ${registrosFallidos === 1 ? 'error' : 'errores'}`}`
+    })
+  },
   async sincronizarDomicilios (context) {
     let registrosFallidos = 0
     const domicilios = await domicilioSinEncuesta.domicilios.filter(x => x.uuid !== null).toArray()

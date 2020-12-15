@@ -229,7 +229,8 @@ export default {
   }),
   computed: {
     ...mapGetters([
-      'signosAlarma'
+      'signosAlarma',
+      'datosMemoria'
     ]),
     autoriza () {
       return !!(this && this.tamizaje && this.tamizaje.localiza_persona && this.tamizaje.contesta_encuesta)
@@ -260,15 +261,27 @@ export default {
     },
     evaluaSolicitaPrueba (tamizaje) {
       if (tamizaje.localiza_persona && tamizaje.contesta_encuesta) {
-        tamizaje.estado_prueba = (tamizaje.riesgo_contacto || (tamizaje.sintomas && (tamizaje.sintomas.length && ((tamizaje.riesgo_procedencia || tamizaje.riesgo_ocupacional) || tamizaje.edad >= 60)))) ? 'Requiere Muestra' : null
+        tamizaje.estado_prueba = (tamizaje.riesgo_contacto || (tamizaje.sintomas && (tamizaje.sintomas.length && ((tamizaje.comorbilidades && tamizaje.comorbilidades.length) || (tamizaje.riesgo_procedencia || tamizaje.riesgo_ocupacional) || tamizaje.edad >= 60))))
+          ? 'Requiere Muestra'
+          : null
       } else {
         tamizaje.estado_prueba = null
       }
     },
     open (encuesta = null, datosNexo = null) {
       if (!encuesta) {
+        const newTamizaje = new Erp()
+        if (this.datosMemoria) {
+          newTamizaje.llamada_entrante = this.datosMemoria.llamada_entrante
+          newTamizaje.tipo_tamizaje = this.datosMemoria.tipo_tamizaje
+          newTamizaje.tamizador_id = this.datosMemoria.tamizador_id
+          newTamizaje.departamento_id = this.datosMemoria.departamento_id
+          newTamizaje.municipio_id = this.datosMemoria.municipio_id
+          newTamizaje.barrio_id = this.datosMemoria.barrio_id
+          newTamizaje.localiza_persona = 1
+          newTamizaje.contesta_encuesta = 1
+        }
         if (datosNexo) {
-          const newTamizaje = new Erp()
           newTamizaje.tipo_identificacion = datosNexo.tipo_identificacion
           newTamizaje.identificacion = datosNexo.identificacion
           newTamizaje.nombre1 = datosNexo.nombre1
@@ -282,10 +295,8 @@ export default {
           newTamizaje.municipio_id = datosNexo.municipio_id
           newTamizaje.eps_id = datosNexo.eps_id
           newTamizaje.observaciones = datosNexo.observaciones
-          this.tamizaje = newTamizaje
-        } else {
-          this.tamizaje = new Erp()
         }
+        this.tamizaje = newTamizaje
         this.activaPR = true
         this.activaSPO2 = true
         this.activaTemperatura = true

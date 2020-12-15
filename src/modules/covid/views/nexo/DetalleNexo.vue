@@ -109,11 +109,11 @@
         color="primary"
       >
         <v-btn>
-          <span>Detalle Nexo</span>
+          <span>Detalle Conviviente</span>
           <v-icon>mdi-card-account-details</v-icon>
         </v-btn>
         <v-btn v-if="encuesta && encuesta.localiza_persona && encuesta.contesta_encuesta">
-          <span>ERP Nexo</span>
+          <span>ERP Conviviente</span>
           <v-icon>mdi-clipboard-text</v-icon>
         </v-btn>
       </v-bottom-navigation>

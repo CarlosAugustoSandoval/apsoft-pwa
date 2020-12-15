@@ -21,6 +21,7 @@ const getters = {
 const actions = {
   async guardarEncuestaERP (context, encuesta) {
     if (!encuesta.uuid) encuesta.uuid = `ERP-${uuid.v1()}`
+    if (!encuesta.idd) context.commit('SET_DATOS_MEMORIA', encuesta)
     return await erp.encuestas[encuesta.idd ? 'put' : 'add'](encuesta)
       .then(() => {
         context.commit('SET_SNACKBAR', { color: 'success', message: 'La Encuesta se ha guardado correctamente.' })
@@ -35,6 +36,7 @@ const actions = {
     if (data.indexNexo !== null) {
       const encuesta = await erp.encuestas.get(parseInt(data.encuestaIdd))
       if (!data.encuesta.uuid) data.encuesta.uuid = `ERPNexo-${uuid.v1()}`
+      if (!data.encuesta.idd) context.commit('SET_DATOS_MEMORIA', data.encuesta)
       encuesta.nexos[data.indexNexo].tamizaje = data.encuesta
       return await erp.encuestas[encuesta.idd ? 'put' : 'add'](encuesta)
         .then(() => {
@@ -46,7 +48,7 @@ const actions = {
           return false
         })
     } else {
-      context.commit('SET_SNACKBAR', { color: 'error', message: 'No hay un nexo seleccionado.' })
+      context.commit('SET_SNACKBAR', { color: 'error', message: 'No hay un conviviente seleccionado.' })
       return false
     }
   },
@@ -85,11 +87,11 @@ const actions = {
     if (encuesta) {
       return await erp.encuestas.put(encuesta)
         .then(() => {
-          context.commit('SET_SNACKBAR', { color: 'success', message: 'El nexo se eliminó correctamente.' })
+          context.commit('SET_SNACKBAR', { color: 'success', message: 'El conviviente se eliminó correctamente.' })
           return true
         })
         .catch(() => {
-          context.commit('SET_SNACKBAR', { color: 'error', message: 'Error al eliminar el nexo.' })
+          context.commit('SET_SNACKBAR', { color: 'error', message: 'Error al eliminar el conviviente.' })
           return false
         })
     }
@@ -109,7 +111,7 @@ const actions = {
             context.commit('SET_SNACKBAR', { color: 'error', message: 'Error al acualizar la encuesta.' })
             return false
           } else {
-            context.commit('SET_SNACKBAR', { color: 'success', message: 'Nexo guardado correctamente.' })
+            context.commit('SET_SNACKBAR', { color: 'success', message: 'Conviviente guardado correctamente.' })
             return true
           }
         })
@@ -118,7 +120,7 @@ const actions = {
         return false
       }
     } else {
-      context.commit('SET_SNACKBAR', { color: 'error', message: 'No hay una encuesta a la cual asignar el nexo.' })
+      context.commit('SET_SNACKBAR', { color: 'error', message: 'No hay una encuesta a la cual asignar el conviviente.' })
       return false
     }
   },
@@ -197,6 +199,7 @@ const actions = {
       domicilios = await domicilios.where('nombreDepartamento').startsWithAnyOfIgnoreCase(datos.search)
         .or('nombreMunicipio').startsWithAnyOfIgnoreCase(datos.search)
         .or('nombreBarrio').startsWithAnyOfIgnoreCase(datos.search)
+        .or('tipificacion').startsWithAnyOfIgnoreCase(datos.search)
         .reverse()
     } else {
       domicilios = await domicilios.toCollection().reverse()
@@ -206,6 +209,18 @@ const actions = {
     response.to = offset + response.items.length
     response.totalPage = response.total ? Math.ceil(response.total / datos.itemsPerPage) : 1
     return response
+  },
+  async obtenerDomicilio (context, idd) {
+    if (idd) {
+      return await domicilioSinEncuesta.domicilios.get(parseInt(idd))
+        .then(async domicilio => {
+          return domicilio
+        })
+        .catch(() => {
+          context.commit('SET_SNACKBAR', { color: 'error', message: 'Error al obtener el registro del domicilio.' })
+          return null
+        })
+    }
   },
   async guardarDomicilio (context, domicilio) {
     if (!domicilio.uuid) domicilio.uuid = `Domicilio-${uuid.v1()}`

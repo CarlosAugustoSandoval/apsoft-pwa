@@ -6,8 +6,8 @@ const state = {
   refresh_token: null,
   user: null,
   permisos: null,
-  server: 'http://localhost:9000'
-  // server: 'https://pruebas.apsoft.io'
+  // server: 'http://localhost:9000'
+  server: 'https://pruebas.apsoft.io'
   // server: 'https://sosaludaps.tk:9000'
 }
 
