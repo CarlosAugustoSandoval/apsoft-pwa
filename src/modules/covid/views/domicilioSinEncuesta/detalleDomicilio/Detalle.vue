@@ -13,6 +13,7 @@
           <p class="ma-0">
             {{ domicilio.nombreBarrio }}
           </p>
+          <v-list-item-subtitle v-if="domicilio.direccion">{{ domicilio.direccion }}</v-list-item-subtitle>
           <v-list-item-subtitle v-if="domicilio.coordenadas">{{ domicilio.coordenadas }}</v-list-item-subtitle>
         </v-list-item-content>
       </v-list-item>
