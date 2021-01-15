@@ -40,7 +40,7 @@
     </v-card>
     <footer-app>
       <v-btn
-        v-if="window === 0 && (encuesta && !encuesta.id)"
+        v-if="window === 0 && encuesta && encuesta.uuid"
         color="orange"
         dark
         absolute
@@ -72,7 +72,7 @@
           <v-icon>mdi-clipboard-text</v-icon>
         </v-btn>
         <v-btn v-if="encuesta && encuesta.localiza_persona && encuesta.contesta_encuesta">
-          <span>Convivientes</span>
+          <span>Contactos</span>
           <v-icon>mdi-human-queue</v-icon>
         </v-btn>
       </v-bottom-navigation>

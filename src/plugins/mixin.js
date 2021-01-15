@@ -6,7 +6,10 @@ Vue.mixin({
     esMovil: false
   }),
   computed: {
-    ...mapGetters(['darkMode', 'user', 'themeColor', 'themeColors', 'goBack'])
+    ...mapGetters(['darkMode', 'user', 'themeColor', 'themeColors', 'goBack', 'roles']),
+    esRastreador () {
+      return this && this.roles && this.roles.length && this.roles.find(z => z.nombre === 'Agente Rastreador')
+    }
   },
   watch: {
     '$vuetify.breakpoint.name': {

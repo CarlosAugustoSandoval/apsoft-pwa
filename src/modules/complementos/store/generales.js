@@ -3,11 +3,12 @@ import { regimenes, regimenesEspeciales, tiposLlamada, tiposTamizaje } from '@/d
 
 // state
 const state = {
+  alertChange: 0,
   datosEmpresa: null,
-  regimenes: regimenes,
-  regimenesEspeciales: regimenesEspeciales,
-  tiposTamizaje: tiposTamizaje,
-  tiposLlamada: tiposLlamada,
+  regimenes: [],
+  regimenesEspeciales: [],
+  tiposTamizaje: [],
+  tiposLlamada: [],
   resultadosPCR: [],
   tiposNoEfectiva: [],
   sexos: [],
@@ -27,6 +28,9 @@ const state = {
 
 // getters
 const getters = {
+  alertChange: state => {
+    return state.alertChange
+  },
   datosEmpresa: state => {
     return state.datosEmpresa
   },
@@ -96,6 +100,9 @@ const actions = {
 
 // mutations
 const mutations = {
+  SET_RELOAD_CHANGE (state, data) {
+    state.alertChange = data
+  },
   SET_DATOS_MEMORIA (state, data) {
     state.datosMemoria.llamada_entrante = data.llamada_entrante
     state.datosMemoria.tipo_tamizaje = data.tipo_tamizaje
@@ -117,6 +124,11 @@ const mutations = {
     state.datosEmpresa = datosEmpresa
   },
   async SET_ASSIGN_GENERALES (state, datos) {
+    state.regimenes = regimenes
+    state.regimenesEspeciales = regimenesEspeciales
+    state.tiposTamizaje = tiposTamizaje
+    state.tiposLlamada = tiposLlamada
+
     state.resultadosPCR = datos.resultado_pcr
     state.tiposNoEfectiva = datos.no_efectividad
     state.sexos = datos.sexos

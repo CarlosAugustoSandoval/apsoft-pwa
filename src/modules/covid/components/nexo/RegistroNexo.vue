@@ -3,7 +3,7 @@
     <v-card tile>
       <v-toolbar dark color="primary">
         <v-toolbar-title>
-          Registro Conviviente
+          Registro Contacto
         </v-toolbar-title>
         <v-spacer></v-spacer>
         <v-btn icon dark @click="close">

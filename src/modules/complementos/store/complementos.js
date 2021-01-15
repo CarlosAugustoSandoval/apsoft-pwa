@@ -1,5 +1,8 @@
 import Vue from 'vue'
 import covid from '@/db/Covid'
+import erp from '@/db/Erp'
+import Erp from '@/class/Erp'
+import { uuid } from 'vue-uuid'
 // state
 const state = {
   departamentos: [],
@@ -211,6 +214,78 @@ const actions = {
           context.commit('SET_SNACKBAR', {
             color: 'error',
             message: 'Error al recuperar los registros de las IPS.',
+            error: error
+          })
+        })
+    })
+  },
+  async descargasEncuestasPendientes (context) {
+    context.commit('SET_TEXT_LOADING', 'Resolviendo descarga de ERP asignadas')
+    return await new Promise(resolve => {
+      Vue.axios.get('user-tamizajes-asignados')
+        .then(async response => {
+          context.commit('SET_TEXT_LOADING', 'Asignando las ERP')
+          const encuestasPendientes = response.data
+          if (encuestasPendientes.length) {
+            let registrados = 0
+            for (var i = 0; i <= encuestasPendientes.length - 1; i++) {
+              const x = encuestasPendientes[i]
+              const encuestaLocal = await erp.encuestas.where('id').equals(x.id).first()
+              if (!encuestaLocal || (encuestaLocal && !encuestaLocal.uuid)) {
+                const elTamizaje = new Erp()
+                elTamizaje.id = x.id
+                elTamizaje.uuid = `ERP-${uuid.v1()}`
+                elTamizaje.created_at = x.created_at
+                elTamizaje.updated_at = x.updated_at
+                elTamizaje.user_id = x.user_id
+                elTamizaje.persona_id = x.persona_id
+                elTamizaje.tipo_tamizaje = x.tipo_tamizaje
+                elTamizaje.llamada_entrante = x.llamada_entrante
+                elTamizaje.tamizador_id = x.tamizador_id
+                elTamizaje.codIpsBai = x.codIpsBai
+                elTamizaje.entidad_reporta_sivigila = x.entidad_reporta_sivigila
+                ///
+                elTamizaje.identificacion = x.identificacion
+                elTamizaje.tipo_identificacion = x.tipo_identificacion
+                elTamizaje.nombre1 = x.nombre1
+                elTamizaje.nombre2 = x.nombre2
+                elTamizaje.apellido1 = x.apellido1
+                elTamizaje.apellido2 = x.apellido2
+                elTamizaje.nombre = [elTamizaje.nombre1, elTamizaje.nombre2, elTamizaje.apellido1, elTamizaje.apellido2].filter(z => z).join(' ')
+                elTamizaje.fecha_nacimiento = x.fecha_nacimiento
+                elTamizaje.sexo = x.sexo
+                elTamizaje.celular = x.celular
+                elTamizaje.celular2 = x.celular2
+                elTamizaje.email = x.email
+                elTamizaje.acudiente = x.acudiente
+                elTamizaje.direccion = x.direccion
+                elTamizaje.departamento_id = x.departamento_id
+                elTamizaje.municipio_id = x.municipio_id
+                elTamizaje.barrio_id = x.barrio_id
+                elTamizaje.si_eps = 1
+                elTamizaje.eps_id = x.eps_id
+                elTamizaje.tipo_afiliacion = x.tipo_afiliacion
+                elTamizaje.regimen_especial = elTamizaje.tipo_afiliacion === 'Régimen Especial' ? x.regimen_especial : null
+                ///
+                elTamizaje.coordenadas = x.coordenadas
+                elTamizaje.observaciones = x.observaciones
+                await erp.encuestas[elTamizaje.idd ? 'put' : 'add'](elTamizaje)
+                  .then(() => {
+                    registrados++
+                  })
+              }
+            }
+            context.commit('SET_SNACKBAR', { color: 'success', message: `${registrados === 1 ? 'Se asignó una encuesta.' : `Se asignaron ${registrados} encuestas.`}` })
+          } else {
+            context.commit('SET_SNACKBAR', { color: 'success', message: 'No tiene encuestas asignadas para descargar.' })
+          }
+          resolve(true)
+        })
+        .catch(error => {
+          resolve(false)
+          context.commit('SET_SNACKBAR', {
+            color: 'error',
+            message: 'Error al recuperar los registros de las ERP asignadas.',
             error: error
           })
         })

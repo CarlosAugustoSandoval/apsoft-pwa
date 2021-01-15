@@ -14,10 +14,10 @@
         <v-list-item-title>{{tamizador}}</v-list-item-title>
       </v-list-item-content>
     </v-list-item>
-    <v-list-item class="px-1" v-if="encuesta.tamizador_id === 897 && encuesta.ips_bai">
+    <v-list-item class="px-1" v-if="encuesta.ips_bai">
       <v-list-item-content class="px-0">
         <v-list-item-subtitle>
-          IPS Busqueda Activa Institucional
+          IPS
         </v-list-item-subtitle>
         <v-list-item-title>{{encuesta.ips_bai.nombre}}</v-list-item-title>
         <p class="mb-0 subtitle-2 grey--text text--lighten-1">
@@ -212,15 +212,13 @@
       <template v-else>
         <v-list-item class="px-1">
           <v-list-item-content class="px-0">
-            <v-list-item-title class="orange--text">
-              El paciente no diligencia la Encuesta de Riesgo Poblacional
-            </v-list-item-title>
+            <p class="mb-0 orange--text text-center">El paciente no diligencia la Encuesta de Riesgo Poblacional</p>
           </v-list-item-content>
         </v-list-item>
       </template>
     </template>
     <template v-else>
-      <v-list-item class="px-1">
+      <v-list-item class="px-1" v-if="encuesta.no_efectividad">
         <v-list-item-content class="px-0">
           <v-list-item-subtitle>
             Motivo de no localización

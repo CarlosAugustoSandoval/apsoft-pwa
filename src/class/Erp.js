@@ -65,11 +65,14 @@ class Erp {
     this.temperatura = null
     this.no_efectividad = null
     this.codIpsBai = null
+    this.edad = null
+    this.estado_gestacion_lactancia = null
     //
     this.ips_bai = null
     this.signos_alarma = []
     this.created_at = null
     this.updated_at = null
+    this.user_id = null
     this.comorbilidades = []
   }
 }

@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-row>
-      <v-col cols="12" v-if="esTamizaje">
+      <v-col cols="12" v-if="esTamizaje && tamizaje && tamizaje.tipo_tamizaje !== 'email'">
         <v-card outlined tile>
           <v-card-text>
             <c-radio
@@ -46,12 +46,13 @@
             item-value="id"
           />
         </v-col>
-        <v-col cols="12" class="pb-0" v-if="tamizaje.tamizador_id === 897">
+        <v-col cols="12" class="pb-0" v-if="[888,897,900].find(x => tamizaje.tamizador_id === x)">
           <buscador-ips
-            label="IPS Busqueda Activa Institucional"
+            ref="buscadorips"
+            label="IPS"
             v-model="tamizaje.codIpsBai"
             rules="required"
-            name="IPS Busqueda Activa Institucional"
+            name="IPS"
           />
         </v-col>
         <v-col class="pb-0" cols="12" v-if="tamizaje.tamizador_id === 890">
@@ -123,6 +124,23 @@
                       item-text="nombre"
                       item-value="id"
                   />
+                </v-card-text>
+              </v-card>
+            </v-col>
+            <v-col cols="12" v-if="mujerGestante">
+              <v-card outlined tile>
+                <v-card-text>
+                  <c-radio
+                    v-model="tamizaje.estado_gestacion_lactancia"
+                    label="¿Se encuentra en estado de gestación o lactancia?"
+                    rules="required"
+                    name="estado de gestación o lactancia"
+                    :items="[{value: 1, text: 'SI'}, {value: 0, text: 'NO'}]"
+                    item-text="text"
+                    item-value="value"
+                    :column="!$vuetify.breakpoint.smAndUp"
+                  >
+                  </c-radio>
                 </v-card-text>
               </v-card>
             </v-col>
@@ -278,7 +296,8 @@ export default {
   },
   data: () => ({
     verificado: 0,
-    loadingidentidad: false
+    loadingidentidad: false,
+    mujerGestante: 0
   }),
   computed: {
     esTamizaje () {
@@ -293,6 +312,18 @@ export default {
     ])
   },
   watch: {
+    'tamizaje.edad': {
+      handler () {
+        this.verificaGestante()
+      },
+      immediate: true
+    },
+    'tamizaje.sexo': {
+      handler () {
+        this.verificaGestante()
+      },
+      immediate: true
+    },
     'tamizaje.localiza_persona': {
       handler (val) {
         if (!val) {
@@ -307,7 +338,7 @@ export default {
           this.tamizaje.entidad_reporta_sivigila = null
           this.tamizaje.hospitalizado = null
         }
-        if (val !== 897) {
+        if ((val !== 888) && (val !== 897) && (val !== 900)) {
           this.tamizaje.codIpsBai = null
         }
       },
@@ -368,6 +399,12 @@ export default {
     }, 600)
   },
   methods: {
+    verificaGestante () {
+      if (this && this.tamizaje) {
+        this.mujerGestante = (this.tamizaje.sexo === 'F' && this.tamizaje.edad > 12) ? 1 : 0
+        if (!this.mujerGestante) this.tamizaje.estado_gestacion_lactancia = null
+      }
+    },
     verificar (val) {
       this.verificado = val
       this.$emit('verificado', val)

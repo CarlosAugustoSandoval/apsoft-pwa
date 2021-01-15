@@ -1,6 +1,15 @@
 <template>
   <v-app>
     <router-view/>
+    <v-snackbar
+      v-model="showVersion"
+      :timeout="-1"
+      color="warning"
+      top
+      content-class="text-center"
+    >
+      Hay actualizaciones pendientes, por favor cierre y abra nuevamente a la aplicación.
+    </v-snackbar>
     <snackbar/>
     <footer-app>
       <alert-install/>
@@ -9,7 +18,7 @@
 </template>
 
 <script>
-
+import { mapGetters } from 'vuex'
 export default {
   name: 'App',
   watch: {
@@ -27,9 +36,14 @@ export default {
       immediate: true
     }
   },
-  data: () => ({
-    //
-  })
+  computed: {
+    showVersion () {
+      return this && this.alertChange
+    },
+    ...mapGetters([
+      'alertChange'
+    ])
+  }
 }
 </script>
 

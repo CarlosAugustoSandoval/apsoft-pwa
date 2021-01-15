@@ -60,7 +60,7 @@ const actions = {
   },
   async sincronizarERPS (context) {
     let registrosFallidos = 0
-    const encuestas = await erp.encuestas.filter(x => x.uuid !== null || (x.nexos.length && x.nexos.find(z => z.uuid !== null || (z.tamizaje && z.tamizaje.uuid !== null)))).toArray()
+    const encuestas = await erp.encuestas.filter(x => (x.localiza_persona !== null && x.uuid !== null) || (x.nexos.length && x.nexos.find(z => z.uuid !== null || (z.tamizaje && z.tamizaje.uuid !== null)))).toArray()
     if (encuestas.length) {
       context.commit('SET_TEXT_LOADING', 'Resolviendo sincronización de ERPS.')
       const encuestasFor1 = encuestas.filter(h => h.uuid)
@@ -69,11 +69,10 @@ const actions = {
         const count = await new Promise(resolve => {
           const encuestaCopia = JSON.parse(JSON.stringify(encuesta))
           if (encuestaCopia.signos_alarma && encuestaCopia.signos_alarma.length) encuestaCopia.sintomas = encuestaCopia.sintomas.concat(encuestaCopia.signos_alarma)
-          // const request = encuestaCopia.id
-          //   ? Vue.axios.put(`tamizajes/${encuestaCopia.id}`, encuestaCopia)
-          //   : Vue.axios.post('tamizajes', encuestaCopia)
-          // request
-          Vue.axios.post('tamizajes', encuestaCopia)
+          const request = encuestaCopia.id
+            ? Vue.axios.put(`tamizajes/${encuestaCopia.id}`, encuestaCopia)
+            : Vue.axios.post('tamizajes', encuestaCopia)
+          request
             .then(async response => {
               context.commit('SET_TEXT_LOADING', `Sincronizando ERP ${i} de ${encuestasFor1.length}`)
               context.commit('SET_PERCENT_LOADING', ((i + 1) / encuestasFor1.length) * 100)

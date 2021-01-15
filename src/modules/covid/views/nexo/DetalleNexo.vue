@@ -109,11 +109,11 @@
         color="primary"
       >
         <v-btn>
-          <span>Detalle Conviviente</span>
+          <span>Detalle Contacto</span>
           <v-icon>mdi-card-account-details</v-icon>
         </v-btn>
         <v-btn v-if="encuesta && encuesta.localiza_persona && encuesta.contesta_encuesta">
-          <span>ERP Conviviente</span>
+          <span>ERP Contacto</span>
           <v-icon>mdi-clipboard-text</v-icon>
         </v-btn>
       </v-bottom-navigation>

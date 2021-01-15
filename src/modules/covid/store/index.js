@@ -48,7 +48,7 @@ const actions = {
           return false
         })
     } else {
-      context.commit('SET_SNACKBAR', { color: 'error', message: 'No hay un conviviente seleccionado.' })
+      context.commit('SET_SNACKBAR', { color: 'error', message: 'No hay un contacto seleccionado.' })
       return false
     }
   },
@@ -87,11 +87,11 @@ const actions = {
     if (encuesta) {
       return await erp.encuestas.put(encuesta)
         .then(() => {
-          context.commit('SET_SNACKBAR', { color: 'success', message: 'El conviviente se eliminó correctamente.' })
+          context.commit('SET_SNACKBAR', { color: 'success', message: 'El contacto se eliminó correctamente.' })
           return true
         })
         .catch(() => {
-          context.commit('SET_SNACKBAR', { color: 'error', message: 'Error al eliminar el conviviente.' })
+          context.commit('SET_SNACKBAR', { color: 'error', message: 'Error al eliminar el contacto.' })
           return false
         })
     }
@@ -111,7 +111,7 @@ const actions = {
             context.commit('SET_SNACKBAR', { color: 'error', message: 'Error al acualizar la encuesta.' })
             return false
           } else {
-            context.commit('SET_SNACKBAR', { color: 'success', message: 'Conviviente guardado correctamente.' })
+            context.commit('SET_SNACKBAR', { color: 'success', message: 'contacto guardado correctamente.' })
             return true
           }
         })
@@ -120,7 +120,7 @@ const actions = {
         return false
       }
     } else {
-      context.commit('SET_SNACKBAR', { color: 'error', message: 'No hay una encuesta a la cual asignar el conviviente.' })
+      context.commit('SET_SNACKBAR', { color: 'error', message: 'No hay una encuesta a la cual asignar el contacto.' })
       return false
     }
   },

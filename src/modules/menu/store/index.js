@@ -17,7 +17,7 @@ const getters = {
     // RCV
     // if (getters.getPermission('aps-encuestasRCVIndex')) menuPrincipal.push(state.itemsMenu.find(x => x.id === 27))
     // Demanda Inducida
-    // if (getters.getPermission('demandaInducida-index')) menuPrincipal.push(state.itemsMenu.find(x => x.id === 30))
+    if (getters.getPermission('demandaInducida-index')) menuPrincipal.push(state.itemsMenu.find(x => x.id === 30))
     // General
     menuPrincipal.push(state.itemsMenu.find(x => x.id === 1))
     // menuPrincipal.push(state.itemsMenu.find(x => x.id === 6))

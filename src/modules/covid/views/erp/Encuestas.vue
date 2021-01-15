@@ -34,11 +34,12 @@
                   <v-list-item-content class="px-0" style="width: 100% !important;">
                     <v-list-item-subtitle
                       class="caption"
-                      :class="`${item.localiza_persona === 0 ? 'red' : item.contesta_encuesta === 0 ? 'orange' : 'green'}--text`"
+                      :class="`${!item.localiza_persona ? 'red' : item.contesta_encuesta === 0 ? 'orange' : 'green'}--text`"
                     >
-                      Encuesta {{ item.localiza_persona === 0 ? 'fallida' : item.contesta_encuesta === 0 ? 'no contestada' : 'efectiva' }}
+                      Encuesta {{ item.localiza_persona === null ? 'Pendiente' : item.localiza_persona === 0 ? 'fallida' : item.contesta_encuesta === 0 ? 'no contestada' : 'efectiva' }}
                       <v-icon
                         v-if="item.uuid !== null || (item.nexos.length && item.nexos.find(z => z.uuid !== null || (z.tamizaje && z.tamizaje.uuid !== null)))"
+                        :disabled="item.localiza_persona === null"
                         small
                         color="orange"
                         right

@@ -1,7 +1,7 @@
 import Dexie from 'dexie'
 
 const covid = new Dexie('covid')
-covid.version(7).stores({
+covid.version(10).stores({
   departamentos: 'id,nombre',
   tamizadores: 'id,nombre',
   causalesVisitaFallida: 'id,causal',

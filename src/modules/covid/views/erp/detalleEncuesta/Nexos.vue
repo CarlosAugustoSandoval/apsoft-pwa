@@ -61,7 +61,7 @@
         </v-col>
       </template>
       <v-col v-else cols="12" class="text-center title">
-        No hay Convivientes registrados
+        No hay Contactos registrados
       </v-col>
     </v-row>
     <v-dialog

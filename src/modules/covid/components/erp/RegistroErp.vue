@@ -230,7 +230,8 @@ export default {
   computed: {
     ...mapGetters([
       'signosAlarma',
-      'datosMemoria'
+      'datosMemoria',
+      'user'
     ]),
     autoriza () {
       return !!(this && this.tamizaje && this.tamizaje.localiza_persona && this.tamizaje.contesta_encuesta)
@@ -246,6 +247,7 @@ export default {
           this.evaluaSolicitaPrueba(tamizajeCopia)
           if (!tamizajeCopia.idd) tamizajeCopia.created_at = this.moment().format('YYYY-MM-DD hh:mm:ss')
           tamizajeCopia.updated_at = this.moment().format('YYYY-MM-DD hh:mm:ss')
+          tamizajeCopia.user_id = this.user.id
           if (this.esNexo) {
             this.$emit('guardarEncuestaNexo', tamizajeCopia)
           } else {
@@ -359,6 +361,7 @@ export default {
           tamizaje.frecuencia_pulso = null
           tamizaje.saturacion_oxigeno = null
           tamizaje.temperatura = null
+          tamizaje.estado_gestacion_lactancia = null
         }
         return tamizaje
       }
